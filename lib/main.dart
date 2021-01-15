@@ -1,5 +1,6 @@
 import 'package:WeeklyExpenseApp/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
@@ -51,12 +52,11 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         title: Text('Weekly Expense App'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Container(
@@ -65,11 +65,73 @@ class MyHomePage extends StatelessWidget {
               child: Text('Graphique'),
               color: Colors.red,
               elevation: 5,
-
+            ),
+          ),
+          Card(
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                    TextField(decoration: InputDecoration(labelText: 'Title'),
+                  ),
+                    TextField(decoration: InputDecoration(labelText: 'Amount'),
+                  ),
+                    FlatButton(
+                      onPressed: () => print('hey'),
+                      child: Text('Ajouter une dépense'),
+                      textColor: Colors.blueGrey,
+                      splashColor: Colors.red,
+                  )
+                ],
+              ),
             ),
           ),
           Column(children: transactions.map((tx) {
-            return Card(child: Text(tx.title),
+            return Card(
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 15
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10
+                    ),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.blueGrey, width: 2
+                        )
+                    ),
+                    child: Text(
+                      '\$${tx.amount}',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.blueGrey
+                      ),
+                  ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        tx.title,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20
+                        ),
+                      ),
+                      Text(
+                          DateFormat.MMMMEEEEd().format(tx.date),
+                          style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  )
+                ],
+              )
             );
           }).toList()
           )
