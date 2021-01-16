@@ -1,3 +1,4 @@
+import 'package:WeeklyExpenseApp/widgets/chart.dart';
 import 'package:WeeklyExpenseApp/widgets/new_transaction.dart';
 import 'package:WeeklyExpenseApp/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  final List<Transaction> _userTransaction = [
+  final List<Transaction> _userTransactions = [
     /*Transaction(
       id: 't1',
       title: 'New Shoes',
@@ -46,6 +47,16 @@ class _MyHomePageState extends State<MyHomePage> {
     )*/
   ];
 
+  List<Transaction> get _recentTransactions {
+    return _userTransactions.where((transaction) {
+        return transaction.date.isAfter(
+            DateTime.now().subtract(
+              Duration(days: 7),
+            ),
+        );
+      }).toList();
+  }
+
   void _addNewTransaction(String title, double amount) {
     final newTransaction = Transaction(
         id: DateTime.now().toString(),
@@ -54,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
         date: DateTime.now());
 
     setState(() {
-      _userTransaction.add(newTransaction);
+      _userTransactions.add(newTransaction);
     });
   }
 
@@ -87,13 +98,9 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Container(
               width: double.infinity,
-              child: Card(
-                child: Text('Graphique'),
-                color: Theme.of(context).primaryColorLight,
-                elevation: 5,
-              ),
+              child: Chart(_recentTransactions),
             ),
-            Transactionlist(_userTransaction),
+            Transactionlist(_userTransactions),
           ],
         ),
       ),
