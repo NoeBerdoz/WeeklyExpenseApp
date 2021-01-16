@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(),
       theme: ThemeData(
         primarySwatch: Colors.teal,
+        fontFamily: 'OpenSans',
       ),
     );
   }
@@ -31,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   final List<Transaction> _userTransaction = [
-    Transaction(
+    /*Transaction(
       id: 't1',
       title: 'New Shoes',
       amount: 199.90,
@@ -42,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
       title: 'Weekly Food',
       amount: 100,
       date: DateTime.now(),
-    )
+    )*/
   ];
 
   void _addNewTransaction(String title, double amount) {
