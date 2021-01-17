@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTransaction;
@@ -11,23 +12,42 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
+
+  DateTime _selectDate;
 
   void submitData() {
     final enteredTitle = titleController.text;
     final enteredAmount = double.parse(amountController.text);
+    final enteredDate = _selectDate;
 
-    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+    if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectDate == null) {
       return; // If it returns, the addTransaction won't be reached.
     }
 
     widget.addTransaction(
       enteredTitle,
       enteredAmount,
+      enteredDate,
     );
     // Close new_transaction form view
     Navigator.of(context).pop();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2021),
+        lastDate: DateTime.now()
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -55,11 +75,27 @@ class _NewTransactionState extends State<NewTransaction> {
               controller: amountController,
               onSubmitted: (_) => submitData(),
             ),
-            FlatButton(
+            Container(
+              height: 70,
+              child: Row(children: <Widget>[
+                Expanded(
+                  child: Text(_selectDate == null
+                      ? 'Aucune date sélectionnée'
+                      : 'Date : ' + DateFormat.yMd().format(_selectDate)
+                  ),
+                ),
+                FlatButton(
+                    onPressed: _presentDatePicker,
+                    child: Text('Choisir une date', style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),),
+                )
+              ],
+              ),
+            ),
+            RaisedButton(
               onPressed: submitData,
               child: Text('Ajouter une dépense'),
-              textColor: Colors.blueGrey,
-              splashColor: Colors.red,
+              color: Theme.of(context).primaryColor,
+              textColor: Colors.white,
             )
           ],
         ),

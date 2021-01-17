@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         fontFamily: 'OpenSans',
       ),
+
     );
   }
 }
@@ -57,12 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
       }).toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime chosenDate) {
     final newTransaction = Transaction(
         id: DateTime.now().toString(),
         title: title,
         amount: amount,
-        date: DateTime.now());
+        date: chosenDate,
+    );
 
     setState(() {
       _userTransactions.add(newTransaction);
@@ -89,7 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.add),
               onPressed: () => _startAddNewTransaction(context),
           ),
-          Text('Hey')
         ],
       ),
       body: SingleChildScrollView( // For Input Responsiveness
